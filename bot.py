@@ -30,31 +30,33 @@ def game(message):
     chat_id = message.chat.id
     text = message.text
     global attempt
+    try:
+        if 5 != attempt and attempt < 5:
 
-    if 5 != attempt and attempt < 5:
-
-        if int(text) == rnum:
-            attempt += 1
-            bot.send_message(chat_id, f'{rnum}')
-            bot.send_message(message.chat.id, 'Поздравляю! Ты угадал!')
-            bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEBOolgiULKH1_eCj2f4RVZBbIh0T3OQAACIgMAAm2wQgO8x8PfoXC1eB8E')
-            bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
+            if int(text) == rnum:
+                attempt += 1
+                bot.send_message(chat_id, f'{rnum}')
+                bot.send_message(message.chat.id, 'Поздравляю! Ты угадал!')
+                bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEBOolgiULKH1_eCj2f4RVZBbIh0T3OQAACIgMAAm2wQgO8x8PfoXC1eB8E')
+                bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
+                bot.send_message(chat_id, 'Хочешь сыграть еще раз?', reply_markup=inline_keyboard)
+            if int(text) != rnum:
+                attempt += 1
+                if int(text) > rnum:
+                    bot.send_message(chat_id, 'Загаданное число меньше чем ты думаешь!')
+                    bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOoxgiUi0VGil2euTtCfFyAj53WHvyAACEwMAAm2wQgMrGNM75XhwfB8E')
+                    bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
+                if int(text) < rnum:
+                    bot.send_message(chat_id, 'Загаданное число больше чем ты думаешь!')
+                    bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOqRgiUkaG3a0vlf-7pFqcoci90pdjAACDAMAAm2wQgNUfsxB8ZeE-x8E')
+                    bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
+        else:
+            bot.send_message(chat_id, 'Ты проиграл!!!')
+            bot.send_message(chat_id, f'Ты использовал {attempt+1} попыток!')
+            bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOrlgiUutzNC-SOvJirp0Xzij_E4zhAACzgwAApmBUUu-SEJ4AYw9hR8E')
             bot.send_message(chat_id, 'Хочешь сыграть еще раз?', reply_markup=inline_keyboard)
-        if int(text) != rnum:
-            attempt += 1
-            if int(text) > rnum:
-                bot.send_message(chat_id, 'Загаданное число меньше чем ты думаешь!')
-                bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOoxgiUi0VGil2euTtCfFyAj53WHvyAACEwMAAm2wQgMrGNM75XhwfB8E')
-                bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
-            if int(text) < rnum:
-                bot.send_message(chat_id, 'Загаданное число больше чем ты думаешь!')
-                bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOqRgiUkaG3a0vlf-7pFqcoci90pdjAACDAMAAm2wQgNUfsxB8ZeE-x8E')
-                bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
-    else:
-        bot.send_message(chat_id, 'Ты проиграл!!!')
-        bot.send_message(chat_id, f'Ты использовал {attempt+1} попыток!')
-        bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOrlgiUutzNC-SOvJirp0Xzij_E4zhAACzgwAApmBUUu-SEJ4AYw9hR8E')
-        bot.send_message(chat_id, 'Хочешь сыграть еще раз?', reply_markup=inline_keyboard)
+    except Exception as e:
+        bot.send_message(chat_id, f'Я не знаю что делать!{e}')
 
 
 @bot.callback_query_handler(func=lambda c: True)
@@ -67,4 +69,4 @@ def func(c):
         bot.send_message(chat_id, 'Угадай число которое я загадал! От 1 до 100!!!')
 
 
-bot.polling()
+bot.polling(none_stop=True)
