@@ -11,8 +11,6 @@ btn2 = InlineKeyboardButton('Нет', callback_data='no')
 inline_keyboard.add(btn1, btn2)
 
 
-rnum = random.randrange(1, 100)
-attempt = 0
 
 
 @bot.message_handler(commands=['start'])
@@ -23,6 +21,20 @@ def starting(message):
     bot.send_message(chat_id, f'Hi, {user}')
     bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOklgiOlR-KFj2lEU9nMlPSGJ2zKIOQACpAADr8ZRGgTuYv70faXbHwQ')
     bot.send_message(chat_id, "Хочешь поиграть:", reply_markup=inline_keyboard)
+
+
+@bot.callback_query_handler(func=lambda c: True)
+def func(c):
+    chat_id = c.message.chat.id
+    if c.data == 'no':
+        bot.send_message(chat_id, 'Хорошо, до встречи!!!')
+        bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOm5giSkFwcu1wHWrxte7Qsx_BmiI_gACCAMAAm2wQgMvOYPVPlZS6R8E')
+    if c.data == 'yes':
+        global rnum
+        rnum = random.randrange(1, 100)
+        global attempt
+        attempt = 0
+        bot.send_message(chat_id, 'Угадай число которое я загадал! От 1 до 100!!!')
 
 
 @bot.message_handler(content_types=['text'])
@@ -57,16 +69,6 @@ def game(message):
             bot.send_message(chat_id, 'Хочешь сыграть еще раз?', reply_markup=inline_keyboard)
     except Exception as e:
         bot.send_message(chat_id, f'Я не знаю что делать!{e}')
-
-
-@bot.callback_query_handler(func=lambda c: True)
-def func(c):
-    chat_id = c.message.chat.id
-    if c.data == 'no':
-        bot.send_message(chat_id, 'Хорошо, до встречи!!!')
-        bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOm5giSkFwcu1wHWrxte7Qsx_BmiI_gACCAMAAm2wQgMvOYPVPlZS6R8E')
-    if c.data == 'yes':
-        bot.send_message(chat_id, 'Угадай число которое я загадал! От 1 до 100!!!')
 
 
 bot.polling(none_stop=True)
