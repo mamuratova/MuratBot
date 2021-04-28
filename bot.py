@@ -41,15 +41,13 @@ def game(message):
     try:
         global attempt
         if 6 != attempt and attempt < 6:
-
+            attempt += 1
             if int(text) == rnum:
-                attempt += 1
                 bot.send_message(message.chat.id, 'Поздравляю! Ты угадал!')
                 bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEBOolgiULKH1_eCj2f4RVZBbIh0T3OQAACIgMAAm2wQgO8x8PfoXC1eB8E')
                 bot.send_message(chat_id, f'Ты использовал {attempt} попыток!')
                 bot.send_message(chat_id, 'Хочешь сыграть еще раз?', reply_markup=inline_keyboard)
             elif int(text) != rnum:
-                attempt += 1
                 if int(text) > rnum:
                     bot.send_message(chat_id, 'Загаданное число меньше чем ты думаешь!')
                     bot.send_sticker(chat_id, 'CAACAgIAAxkBAAEBOoxgiUi0VGil2euTtCfFyAj53WHvyAACEwMAAm2wQgMrGNM75XhwfB8E')
